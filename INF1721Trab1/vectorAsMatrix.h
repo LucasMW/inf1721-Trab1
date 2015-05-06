@@ -10,7 +10,8 @@
 #define __INF1721Trab1__vectorAsMatrix__
 
 #include <stdio.h>
-typedef char* Matrix; //the type of matrix
+#include "puzzleConfiguration.h"
+typedef BoardPieces* Matrix; //the type of matrix
 int MIndex(int i, int j,int n);
 void MPrint(Matrix A,int n);
 void MCopy(Matrix  org, Matrix dest,int n);

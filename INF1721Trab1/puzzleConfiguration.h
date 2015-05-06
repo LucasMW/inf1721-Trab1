@@ -27,4 +27,8 @@ typedef enum
     
 } BoardPieces;
 Board createBoard(Board board, BoardPieces pieces[boardLimit] );
+BoardPieces** adjacentConfigs(Board board,int* refTam);
+void printBoardConfiguration(BoardPieces* pieces);
+void printBoardConfigurations(BoardPieces** boardPiecesVector,int tam);
+void printBoard(Board b);
 #endif /* defined(__INF1721Trab1__puzzleConfiguration__) */

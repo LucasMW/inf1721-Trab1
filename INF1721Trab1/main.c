@@ -13,7 +13,8 @@ int main(int argc, const char * argv[]) {
     Board b,b2;
     BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void};
     BoardPieces pieces2[boardLimit]={One,Two,Three,Three,Five,Seven,Eight,Void};
-    
+    BoardPieces** adjcConfig;
+    int cont;
     b=createBoard(b, pieces);
     if(b)
         printf("b created\n");
@@ -25,6 +26,10 @@ int main(int argc, const char * argv[]) {
     else
         printf("failed\n");
     
+    printBoard(b);
+    adjcConfig=adjacentConfigs(b,&cont);
+    printf("cont %d\n",cont);
+    printBoardConfigurations(adjcConfig, cont);
     
     printf("Hello, World!\n");
     

@@ -13,7 +13,7 @@
 #define _thisDebug
 struct board
 {
-   char squares[boardLimit];
+   BoardPieces squares[boardLimit];
     //char squareMatrix[boardRows][boardColumns];
 };
 typedef enum
@@ -63,6 +63,34 @@ static bit checkRepeatedBoardPieces(Board board)
     
     return False;
 }
+void printBoard(Board b)
+{
+//    int i;
+//    
+//    for(i=0;i<boardLimit;i+=3)
+//    {
+//        printf("| %.2d %.2d %.2d |\n",b->squares[i],b->squares[i+1],b->squares[i+2]);
+//    }
+    printBoardConfiguration(b->squares);
+}
+void printBoardConfiguration(BoardPieces* pieces)
+{
+    int i;
+    for(i=0;i<boardLimit;i+=3)
+    {
+        printf("| %.2d %.2d %.2d |\n",pieces[i],pieces[i+1],pieces[i+2]);
+    }
+}
+void printBoardConfigurations(BoardPieces** boardPiecesVector,int tam)
+{
+    int i;
+    for(i=0;i<tam;i++)
+    {
+        printf("%d\n",i);
+        printBoardConfiguration(boardPiecesVector[i]);
+        printf("\n");
+    }
+}
 Board createBoard(Board board, BoardPieces pieces[boardLimit] )
 {   int i;
     
@@ -84,16 +112,18 @@ static char findVoid(Board board)
             break;
     return i;
 }
-static void findVoidAsMatrix(BoardPieces* config,int* i,int* j)
+static bit findVoidAsMatrix(BoardPieces* config,int* i,int* j)
 {
-    for(*i=0;*i<boardRows;i++)
+    for(*i=0;*i<boardRows;(*i)++)
     {
-        for(*j=0;*j<boardColumns;j++)
+        for(*j=0;*j<boardColumns;(*j)++)
         {
+            printf("(%d,%d)\n",*i,*j);
             if(config[MIndex(*i, *j, boardRows)]==Void)
-                break;
+                return True;
         }
     }
+    return False;
 }
 static void swapX(BoardPieces * a, BoardPieces* b)
 {
@@ -101,13 +131,13 @@ static void swapX(BoardPieces * a, BoardPieces* b)
     *b ^= *a;
     *a ^= *b;
 }
-BoardPieces** adjacentConfigs(Board board)
+BoardPieces** adjacentConfigs(Board board,int* refTam)
 {
     char voidPosition;
     int row,column;
     int cont;
-    BoardPieces** configs;
-    findVoidAsMatrix(board->squares, &row, &column);
+    BoardPieces* configs[4];
+    findVoidAsMatrix((BoardPieces*)board->squares, &row, &column);
     
     /* candidates
      void[i][j+1] //to the right
@@ -119,7 +149,7 @@ BoardPieces** adjacentConfigs(Board board)
     if(row+1<boardRows)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
-        MCopy(board->squares, configs[cont], boardColumns);
+        MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row+1, column, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
         cont++;
         
@@ -127,7 +157,7 @@ BoardPieces** adjacentConfigs(Board board)
     if(column+1>boardColumns)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
-        MCopy(board->squares, configs[cont], boardColumns);
+        MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row, column+1, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
         cont++;
         
@@ -135,12 +165,20 @@ BoardPieces** adjacentConfigs(Board board)
     if(column-1>0)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
-        MCopy(board->squares, configs[cont], boardColumns);
+        MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row, column-1, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
         cont++;
         
     }
-    
+    if(row-1>0)
+    {
+        configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
+        MCopy(board->squares, (Matrix)configs[cont], boardColumns);
+        swapX(&((configs[cont])[MIndex(row-1, column, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
+        cont++;
+        
+    }
+    *refTam=cont;
     return configs;
     
     
