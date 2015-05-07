@@ -14,6 +14,7 @@
 struct board
 {
    BoardPieces squares[boardLimit];
+   int id;
     //char squareMatrix[boardRows][boardColumns];
 };
 typedef enum
@@ -91,10 +92,12 @@ void printBoardConfigurations(BoardPieces** boardPiecesVector,int tam)
         printf("\n");
     }
 }
+
 Board createBoard(Board board, BoardPieces pieces[boardLimit] )
 {   int i;
     
     board = (Board)malloc(sizeof(struct board));
+    board->id=0;
     for(i=0;i<boardLimit;i++)
     {
         board->squares[i]=pieces[i];
@@ -104,6 +107,18 @@ Board createBoard(Board board, BoardPieces pieces[boardLimit] )
     return NULL;
     
 }
+Board* generateBoardsFromConfigurationVectors(BoardPieces** piecesVector, int cont)
+{
+    Board* boardVector;
+    int i;
+    boardVector=(Board*)malloc(sizeof(Board)*cont);
+    for(i=0;i<cont;i++)
+    {
+        boardVector[i]=createBoard(boardVector[i], piecesVector[i]);
+    }
+    return boardVector;
+}
+
 static char findVoid(Board board)
 {
     char i;
@@ -125,18 +140,32 @@ static bit findVoidAsMatrix(BoardPieces* config,int* i,int* j)
     }
     return False;
 }
+int boardGetId(Board b)
+{
+    return b->id;
+}
+void boardSetId(Board b,int id)
+{
+    b->id=id;
+}
 static void swapX(BoardPieces * a, BoardPieces* b)
 {
     *a ^= *b;
     *b ^= *a;
     *a ^= *b;
 }
+void boardDestroy(Board b)
+{
+    free(b->squares);
+    //free(b);
+}
 BoardPieces** adjacentConfigs(Board board,int* refTam)
 {
     char voidPosition;
     int row,column;
     int cont;
-    BoardPieces* configs[4];
+    BoardPieces** configs;
+    configs=(BoardPieces**)malloc(sizeof(BoardPieces*)*4);
     findVoidAsMatrix((BoardPieces*)board->squares, &row, &column);
     
     /* candidates
@@ -175,10 +204,13 @@ BoardPieces** adjacentConfigs(Board board,int* refTam)
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
         MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row-1, column, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
+        printBoardConfiguration(configs[cont]);
         cont++;
         
     }
     *refTam=cont;
+    printf("isdhj\n");
+    printBoardConfigurations(configs, cont);
     return configs;
     
     
