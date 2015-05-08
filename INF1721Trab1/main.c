@@ -21,9 +21,11 @@ int main(int argc, const char * argv[])
 
     BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void};
     BoardPieces pieces2[boardLimit]={One,Two,Three,Three,Five,Seven,Eight,Void};
+    BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six};
     BoardPieces** adjcConfig;
     Board* boards;
     GRA_tppGrafo grafo;
+  
     int cont;
     int i;
     int tempInt;
@@ -39,6 +41,8 @@ int main(int argc, const char * argv[])
         printf("failed\n");
     
     printBoard(b);
+
+	//part that Really matters
     adjcConfig=adjacentConfigs(b,&cont);
     printf("cont %d\n",cont);
     printBoardConfigurations(adjcConfig, cont);
@@ -46,7 +50,7 @@ int main(int argc, const char * argv[])
     
     GRA_CriarGrafo(&grafo, (void*)boardDestroy);
     GRA_InserirNo(grafo, b, &tempInt);
-    boardSetId(b, tempInt);
+    boardSetId(b, tempInt); //sets initial configuration
     for(i=0;i<cont;i++)
     {
         GRA_InserirNo(grafo,boards[i] ,&tempInt);
@@ -58,6 +62,7 @@ int main(int argc, const char * argv[])
             break;
         }
     }
+	
     
     GRA_ImprimirGrafo(grafo);
     GRA_DestruirGrafo(grafo);
