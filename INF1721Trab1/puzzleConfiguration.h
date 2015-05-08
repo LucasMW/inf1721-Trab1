@@ -26,9 +26,16 @@ typedef enum
     Void = '-'
     
 } BoardPieces;
+typedef enum
+{
+    True='$',
+    False=0
+    
+} bit;
 Board createBoard(Board board, BoardPieces pieces[boardLimit] );
 BoardPieces** adjacentConfigs(Board board,int* refTam);
 Board* generateBoardsFromConfigurationVectors(BoardPieces** piecesVector, int cont);
+bit boardCompare(Board b1, Board b2);
 void printBoardConfiguration(BoardPieces* pieces);
 void printBoardConfigurations(BoardPieces** boardPiecesVector,int tam);
 void printBoard(Board b);

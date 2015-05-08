@@ -10,7 +10,12 @@
 
 #include "puzzleConfiguration.h"
 #include "grafo.h"
-int main(int argc, const char * argv[]) {
+
+
+
+
+int main(int argc, const char * argv[])
+{
     // insert code here...
     Board b,b2;
 
@@ -47,6 +52,11 @@ int main(int argc, const char * argv[]) {
         GRA_InserirNo(grafo,boards[i] ,&tempInt);
         boardSetId(boards[i], tempInt);
         GRA_InserirAresta(grafo, boardGetId(boards[i]), boardGetId(b), 1);
+        if(boardCompare(boards[i],b))
+        {
+            printf("Found\n");
+            break;
+        }
     }
     
     GRA_ImprimirGrafo(grafo);

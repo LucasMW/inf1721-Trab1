@@ -30,12 +30,7 @@ typedef enum
     
 } boardSQUARES;
 
-typedef enum
-{
-    True='$',
-    False=0
-    
-} bit;
+
 
 
 
@@ -158,6 +153,16 @@ void boardDestroy(Board b)
 {
     free(b->squares);
     //free(b);
+}
+bit boardCompare(Board b1, Board b2)
+{
+    int i=0;
+    for(i=0;i<boardLimit;i++)
+    {
+        if(b1->squares[i]!=b2->squares[i])
+            return False;
+    }
+    return True;
 }
 BoardPieces** adjacentConfigs(Board board,int* refTam)
 {
