@@ -157,6 +157,11 @@ void boardDestroy(Board b)
 bit boardCompare(Board b1, Board b2)
 {
     int i=0;
+    printf("Boards CMP\n");
+    
+    printBoard(b1);
+    printBoard(b2);
+    printf("END Boards CMP\n");
     for(i=0;i<boardLimit;i++)
     {
         if(b1->squares[i]!=b2->squares[i])
