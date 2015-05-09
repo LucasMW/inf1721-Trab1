@@ -38,6 +38,11 @@ void verifyAdjacents(Board orBoard, Board* adjBoards, int cont)
     BoardPieces** newAdj;
     Board* newBoards;
     static int k=0;
+    if(boardCompare(orBoard,boardFinal)==True)
+    {
+        printf("Found\n");
+        return;
+    }
     k++;
     for(i=0;i<cont;i++)
     {
@@ -71,13 +76,16 @@ int main(int argc, const char * argv[])
 
     BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void};
     BoardPieces pieces2[boardLimit]={One,Two,Three,Three,Five,Seven,Eight,Void};
-    BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six};
+    //BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six};
+    BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six};
+    //BoardPieces finalConfiguration[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Void,Eight};
     BoardPieces** adjcConfig;
     
     Board* boards;
     GRA_tppGrafo grafo;
     bit flag1;
     bit flag2;
+    int* ids;
   
     int cont;
     int i;
@@ -125,6 +133,11 @@ int main(int argc, const char * argv[])
     
     
     GRA_ImprimirGrafo(grafo);
+    GRA_DFS(grafo, &ids, &cont, boardGetId(b));
+    if(GRA_ExisteCaminho(grafo, boardGetId(b), boardGetId(bF))==GRA_CondRetCaminhoExiste)
+        printf("There is\n");
+    else
+        printf("There is not\n");
     
     GRA_DestruirGrafo(grafo);
     printf("Hello, World!\n");

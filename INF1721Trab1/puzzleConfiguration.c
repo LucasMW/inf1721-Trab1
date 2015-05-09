@@ -128,7 +128,7 @@ static bit findVoidAsMatrix(BoardPieces* config,int* i,int* j)
     {
         for(*j=0;*j<boardColumns;(*j)++)
         {
-            printf("(%d,%d)\n",*i,*j);
+           // printf("(%d,%d)\n",*i,*j);
             if(config[MIndex(*i, *j, boardRows)]==Void)
                 return True;
         }
@@ -157,11 +157,11 @@ void boardDestroy(Board b)
 bit boardCompare(Board b1, Board b2)
 {
     int i=0;
-    printf("Boards CMP\n");
+    //printf("Boards CMP\n");
     
-    printBoard(b1);
-    printBoard(b2);
-    printf("END Boards CMP\n");
+    //printBoard(b1);
+    //printBoard(b2);
+    //printf("END Boards CMP\n");
     for(i=0;i<boardLimit;i++)
     {
         if(b1->squares[i]!=b2->squares[i])
