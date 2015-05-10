@@ -25,6 +25,8 @@
 #include "grafo.h"
 #undef GRA_OWN
 
+//#define GRA_DEBUG
+
 
 
 /***********************************************************************
@@ -978,6 +980,8 @@ static void visit(GRA_noGrafo noCorr,int* visited,int tam,int* ordened)
 	GRA_noGrafo p; //percorredor
 	GRA_tpAresta acs; //percorredor
 	LIS_tppLista l; //percorredor
+    
+#ifdef GRA_DEBUG
 		 printf("Iteration\n");
  printf("Visited <");
  for(i=0;i<tam;i++)
@@ -991,10 +995,13 @@ static void visit(GRA_noGrafo noCorr,int* visited,int tam,int* ordened)
 	 printf("%d",ordened[i]);
  }
  printf(">\n");
+#endif
 
 	if(visited[noCorr->verticeId-1]==0) //Se não visitado
-	{	printf("visiting %d\n",noCorr->verticeId);
-		
+    {
+        #ifdef GRA_DEBUG
+        printf("visiting %d\n",noCorr->verticeId);
+        #endif
 		l=noCorr->listaArestas;
 		
 		if(l&&LIS_IrInicioLista(l)!=LIS_CondRetListaVazia)

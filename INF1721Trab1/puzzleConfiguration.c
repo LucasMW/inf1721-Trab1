@@ -177,6 +177,7 @@ BoardPieces** adjacentConfigs(Board board,int* refTam)
     BoardPieces** configs;
     configs=(BoardPieces**)malloc(sizeof(BoardPieces*)*4);
     findVoidAsMatrix((BoardPieces*)board->squares, &row, &column);
+    //printf("void found on position [%d,%d]\n",row,column);
     
     /* candidates
      void[i][j+1] //to the right
@@ -190,37 +191,46 @@ BoardPieces** adjacentConfigs(Board board,int* refTam)
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
         MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row+1, column, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
+        //printf("%d down\n",cont);
         cont++;
         
     }
-    if(column+1>boardColumns)
+    if(column+1<boardColumns)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
         MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row, column+1, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
+        //printf("%d right\n",cont);
         cont++;
         
     }
-    if(column-1>0)
+    if(column-1>=0)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
         MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row, column-1, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
+        //printf("%d left\n",cont);
         cont++;
         
     }
-    if(row-1>0)
+    if(row-1>=0)
     {
         configs[cont]= (BoardPieces*)malloc(sizeof(BoardPieces)*boardLimit);
         MCopy(board->squares, (Matrix)configs[cont], boardColumns);
         swapX(&((configs[cont])[MIndex(row-1, column, boardRows)]), &((configs[cont])[MIndex(row, column, boardRows)]));
-        printBoardConfiguration(configs[cont]);
+        //printf("%d up\n",cont);
         cont++;
         
     }
     *refTam=cont;
-    printf("isdhj\n");
+    #ifdef this_debug
+    printf("Board: \n");
+    printBoard(board);
+    printf("generated %d configurations:\n",cont);
+    
     printBoardConfigurations(configs, cont);
+    printf("end\n");
+    #endif
     return configs;
     
     
