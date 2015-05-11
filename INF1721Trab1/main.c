@@ -112,16 +112,23 @@ int main(int argc, const char * argv[])
     // insert code here...
     Board b,b2,bF;
 
-    BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void}; 
+    BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void};
     //BoardPieces pieces[boardLimit]={Eight,Six,One,Seven,Four,Three,Five,Two,Void};
     BoardPieces pieces2[boardLimit]={One,Two,Three,Three,Five,Seven,Eight,Void};
-    //BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six}; // slow
-   // BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six}; //slow
-    //BoardPieces finalConfiguration[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Void,Eight}; //really fast
-    //BoardPieces finalConfiguration[boardLimit]={One,Two,Void,Four,Five,Three,Seven,Eight,Six}; //fast
-    //BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //slow
-    //BoardPieces finalConfiguration[boardLimit]={Seven,Eight,Void,One,Two,Three,Four,Five,Six}; //slow
-    BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Void,Five}; //fast
+    //BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six}; // slow, slow
+    //BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six}; //slow, slow
+    //BoardPieces finalConfiguration[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Void,Eight}; //really fast, slow
+    //BoardPieces finalConfiguration[boardLimit]={One,Two,Void,Four,Five,Three,Seven,Eight,Six}; //fast, slow
+    //BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //slow ,slow
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Eight,Void,One,Two,Three,Four,Five,Six}; //slow , slow
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Void,Five}; //fast
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Five,Void}; //fast
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Void,Three,Five,Eight}; //fast
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Void,Six,One,Four,Three,Five,Eight}; //slow
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Void,One,Three,Five,Eight}; //fast
+     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Void,Six,One,Three,Five,Eight}; //slow
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Five,One,Three,Void,Eight}; //fast
+    BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Five,One,Void,Three,Eight}; //slow
     BoardPieces** adjcConfig;
     
     Board* boards;
@@ -194,10 +201,13 @@ int main(int argc, const char * argv[])
     GRA_DFS(grafo, &ids, &cont, boardGetId(b));
     end_time=(int)time(NULL);
     printf("it took %d seconds\n",end_time-start_time);
+    start_time=(int)time(NULL);
     if(GRA_ExisteCaminho(grafo, boardGetId(b), boardGetId(bF))==GRA_CondRetCaminhoExiste)
         printf("There is\n");
     else
         printf("There is not\n");
+    end_time=(int)time(NULL);
+    printf("it took %d seconds\n",end_time-start_time);
 //    GRA_ObterValorNo(grafo, 3, (void**)&b2);
 //    adjcConfig=adjacentConfigs(b2, &tempInt);
 //    printf("cont %d\n",cont);
