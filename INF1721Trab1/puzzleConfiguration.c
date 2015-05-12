@@ -15,6 +15,7 @@ struct board
 {
    BoardPieces squares[boardLimit];
    int id;
+   int permutIndex;
     //char squareMatrix[boardRows][boardColumns];
 };
 typedef enum
@@ -30,10 +31,81 @@ typedef enum
     
 } boardSQUARES;
 
+static Board allPossibilities[boardPossibilities];
+
+int boardPermutIndex(Board b)
+{
+    return permutationIndex(b->squares);
+}
+int permutationIndex(BoardPieces* pieces)
+{
+    int index = 0;
+    int position = 2;// position 1 is paired with factor 0 and so is skipped
+    int factor = 1;
+    for (int p = 9 - 2; p >= 0; p--) {
+        int successors = 0;
+        for (int q = p + 1; q < 9; q++) {
+            if (pieces[p] > pieces[q]) {
+                successors++;
+            }
+        }
+        index += (successors * factor);
+        factor *= position;
+        position++;
+    }
+    return index;
+}
 
 
-
-
+static void swap (BoardPieces *x, BoardPieces *y)
+{
+    BoardPieces temp;
+    temp = *x;
+    *x = *y;
+    *y = temp;
+}
+int permute(Board b, int i, int n)
+{
+    int j;
+    static int k=0;
+//    if(k==0)
+//    {
+//        printf("orBoard\n");
+//        printBoard(b);
+//    }
+    if (i == n)
+    {
+        b=createBoard(b,b->squares);
+       // b->permutIndex=k;
+        printf("k: %d permut: %d\n",k,b->permutIndex);
+        printBoard(b);
+        allPossibilities[b->permutIndex]=b;
+        k++;
+    }
+    else
+    {
+        for (j = i; j <= n; j++)
+        {
+            
+            swap(b->squares+i, b->squares+j) ;//swap((a+i), (a+j));
+            permute(b, i+1, n);
+            swap(b->squares+i, b->squares+j) ; //swap((a+i), (a+j)); //backtrack
+        }
+    }
+    return k;
+}
+Board* generateAllPossibilities(Board orBoard)
+{
+    int i,k;
+    k=permute(orBoard, 0, 8);
+    for(i=0;i<k;i++)
+    {
+        printf("index %d, permut %d\n",i,allPossibilities[i]->permutIndex);
+        printBoard(allPossibilities[i]);
+    }
+    
+    return allPossibilities;
+}
 static bit checkRepeatedBoardPieces(Board board)
 {
     int i;
@@ -93,6 +165,7 @@ Board createBoard(Board board, BoardPieces pieces[boardLimit] )
     
     board = (Board)malloc(sizeof(struct board));
     board->id=0;
+    board->permutIndex= permutationIndex(pieces);
     for(i=0;i<boardLimit;i++)
     {
         board->squares[i]=pieces[i];

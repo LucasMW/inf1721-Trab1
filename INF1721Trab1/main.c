@@ -15,6 +15,9 @@
 
 Board boardFinal;
 GRA_tppGrafo grafoGlobal;
+Board* allPossibilities;
+bit  nodeMarked[boardPossibilities];
+
 void printGraphElements(GRA_tppGrafo grafo)
 {
     int * ids;
@@ -37,15 +40,18 @@ bit boardIsInAlreadyOnGraph(GRA_tppGrafo grafo, Board b)
     int tam;
     int i;
     Board currentBoard;
-    GRA_ObterVertices(grafo, &ids, &tam);
-    for(i=0;i<tam;i++)
-    {
-        //printf("v: %d\n ",i);
-        GRA_ObterValorNo(grafo, ids[i], (void**)&currentBoard);
-        if(boardCompare(b, currentBoard)==True)
-            return True;
-        
-    }
+    
+//    GRA_ObterVertices(grafo, &ids, &tam);
+//    for(i=0;i<tam;i++)
+//    {
+//        //printf("v: %d\n ",i);
+//        GRA_ObterValorNo(grafo, ids[i], (void**)&currentBoard);
+//        if(boardCompare(b, currentBoard)==True)
+//            return True;
+//        
+//    }
+    if(nodeMarked[boardPermutIndex(b)]==True)
+        return True;
     return False;
 }
 
@@ -68,7 +74,8 @@ void verifyAdjacents(Board orBoard, Board* adjBoards, int cont)
         return;
     }
     k++;
-    printf("k %d\n",k);
+    if(k%1000==0)
+        printf("k %d\n",k);
     for(i=0;i<cont;i++)
     {
         //printf("k: %d ,adjBoard[%d]\n",k,i);
@@ -90,6 +97,7 @@ void verifyAdjacents(Board orBoard, Board* adjBoards, int cont)
             #endif
             GRA_InserirNo(grafoGlobal,adjBoards[i] ,&tempInt);
             boardSetId(adjBoards[i], tempInt);
+            nodeMarked[boardPermutIndex(adjBoards[i])]=True;
             GRA_InserirAresta(grafoGlobal, boardGetId(adjBoards[i]), boardGetId(orBoard), 1);
             newAdj=adjacentConfigs(adjBoards[i], &tempInt);
             newBoards=generateBoardsFromConfigurationVectors(newAdj, tempInt);
@@ -119,7 +127,7 @@ int main(int argc, const char * argv[])
     //BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six}; //slow, slow
     //BoardPieces finalConfiguration[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Void,Eight}; //really fast, slow
     //BoardPieces finalConfiguration[boardLimit]={One,Two,Void,Four,Five,Three,Seven,Eight,Six}; //fast, slow
-    //BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //slow ,slow
+    BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //slow ,slow
     //BoardPieces finalConfiguration[boardLimit]={Seven,Eight,Void,One,Two,Three,Four,Five,Six}; //slow , slow
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Void,Five}; //fast
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Five,Void}; //fast
@@ -128,7 +136,7 @@ int main(int argc, const char * argv[])
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Void,One,Three,Five,Eight}; //fast
      //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Void,Six,One,Three,Five,Eight}; //slow
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Five,One,Three,Void,Eight}; //fast
-    BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Five,One,Void,Three,Eight}; //slow
+    //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,Five,One,Void,Three,Eight}; //slow
     BoardPieces** adjcConfig;
     
     Board* boards;
@@ -167,6 +175,9 @@ int main(int argc, const char * argv[])
     
     
 	//part that Really matters
+    for(i=0;i<boardPossibilities;i++)
+        nodeMarked[i]=False;
+    
     adjcConfig=adjacentConfigs(b,&cont);
     printf("cont %d\n",cont);
     printBoardConfigurations(adjcConfig, cont);
@@ -174,14 +185,17 @@ int main(int argc, const char * argv[])
     
     GRA_CriarGrafo(&grafo, (void*)boardDestroy);
     GRA_InserirNo(grafo, b, &tempInt);
+    nodeMarked[boardPermutIndex(b)]=True;
     boardSetId(b, tempInt); //sets initial configuration
     
     GRA_InserirNo(grafo,bF ,&tempInt);
+    nodeMarked[boardPermutIndex(bF)]=True;
     boardSetId(bF, tempInt); //sets final configuration
     flag1=False;
     boardFinal=bF;
     grafoGlobal=grafo;
     
+   
     start_time=(int)time(NULL);
     verifyAdjacents(b, boards, cont);
     end_time=(int)time(NULL);
@@ -216,6 +230,9 @@ int main(int argc, const char * argv[])
     
     GRA_DestruirGrafo(grafo);
     printf("Hello, World!\n");
+    //permute(b, 0, 8);
+    //allPossibilities=generateAllPossibilities(b);
+    
     
     return 0;
 }

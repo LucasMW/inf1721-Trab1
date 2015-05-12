@@ -13,6 +13,7 @@
 #define boardLimit 9
 #define boardRows 3
 #define boardColumns 3
+#define boardPossibilities 362880
 typedef struct board* Board;
 typedef enum
 {   One=1,
@@ -42,4 +43,7 @@ void printBoard(Board b);
 void boardDestroy(Board b);
 int boardGetId(Board b);
 void boardSetId(Board b,int id);
+//void permute(Board b, int i, int n);
+Board* generateAllPossibilities(Board orBoard);
+int boardPermutIndex(Board b);
 #endif /* defined(__INF1721Trab1__puzzleConfiguration__) */
