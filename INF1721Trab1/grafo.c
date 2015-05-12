@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
+#define FAST_ID
 
 #define GRA_OWN
 #include "grafo.h"
@@ -49,6 +50,9 @@
 
 		 int idCorrente;
 			/* Ponteiro para o id do vértice corrente */
+#ifdef FAST_ID
+       int lastId;
+#endif
 
    } GRA_tpGrafo ;
 
@@ -156,13 +160,26 @@ GRA_tpCondRet   GRA_InserirNo ( GRA_tppGrafo grafo, void * pInfo, int * pNoId)
 	int id=1; //ids começam em 1
 		if(LIS_IrFinalLista(grafo->pVertices)!=LIS_CondRetListaVazia)
 		{	
-			while(IdExisteJa(grafo,id))
+            #ifdef FAST_ID
+            id=grafo->lastId;
+            grafo->lastId++;
+            
+            #endif
+            #ifndef FAST_ID
+            while(IdExisteJa(grafo,id))
 			{	id++;
 				//printf("id: %d\t",id);
 			}	//Garantirá que id sera sempre diferente
+            #endif
 		}
 		else
+        {
 			id=1; //ids começam em 1
+            #ifdef FAST_ID
+            grafo->lastId=1;
+            grafo->lastId++;
+            #endif
+        }
 		/* if */
     novoNo=(GRA_noGrafo)malloc(sizeof(struct GRA_verticeGrafo)); //cria nó
 	novaOrigem=(GRA_noGrafo)malloc(sizeof(struct GRA_verticeGrafo));

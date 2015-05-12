@@ -123,12 +123,12 @@ int main(int argc, const char * argv[])
     BoardPieces pieces[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Eight,Void};
     //BoardPieces pieces[boardLimit]={Eight,Six,One,Seven,Four,Three,Five,Two,Void};
     BoardPieces pieces2[boardLimit]={One,Two,Three,Three,Five,Seven,Eight,Void};
-    //BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six}; // slow, slow
-    //BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six}; //slow, slow
+    //BoardPieces finalConfiguration[boardLimit]={Void,Three,Five,Eight,Two,Seven,One,Four,Six}; // crashes 60.000, slow
+    //BoardPieces finalConfiguration[boardLimit]={Void,Two,Three,One,Four,Five,Seven,Eight,Six}; //crashes, slow
     //BoardPieces finalConfiguration[boardLimit]={One,Two,Three,Four,Five,Six,Seven,Void,Eight}; //really fast, slow
     //BoardPieces finalConfiguration[boardLimit]={One,Two,Void,Four,Five,Three,Seven,Eight,Six}; //fast, slow
-    BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //slow ,slow
-    //BoardPieces finalConfiguration[boardLimit]={Seven,Eight,Void,One,Two,Three,Four,Five,Six}; //slow , slow
+    BoardPieces finalConfiguration[boardLimit]={Six,One,Three,Eight,Four,Two,Void,Seven,Five}; //possible ,slow
+   // BoardPieces finalConfiguration[boardLimit]={Seven,Eight,Void,One,Two,Three,Four,Five,Six}; //slow , slow
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Void,Five}; //fast
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Eight,Three,Five,Void}; //fast
     //BoardPieces finalConfiguration[boardLimit]={Seven,Two,Four,Six,One,Void,Three,Five,Eight}; //fast
